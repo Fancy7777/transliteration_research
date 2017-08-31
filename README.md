@@ -28,3 +28,16 @@ Experiment design
 6. Try Other methods include RNN, RNN with LSTM, Seq2seq, word2vec etc
 
 Do experiement with analysis and adjust plans when necessary. Add other improve method when the accuracy is sastisfactory.
+
+
+
+2017/8/31:
+1. ldc_propernames_other_ec_v1.beta_transformed.txt need to filter out some not tranliteration's data
+2. Same Chinese transliteration choose USA version
+3. Some are just dictionary based. Need to use a dictionary to filter
+
+4. First filter out the same tranliteration. 
+5. ldc_propernames_place_ec_v1.beta_transformed.txt filter out only English speaking country. Other country is not neccesary. English spearking country include: USA, UK, Canada, South Africa, Australia, New Zealand, Pakistan, India, Ireland,Nigeria，Philippines,Malaysia,Uganda,Ghana, Cameroon,Zimbabwe,Zambia,Rwanda,sierra leone,Papua New Guinea,Puerto Rico,Jamaica,Namibia
+
+
+Good dataset: ldc_propernames_people_ec_v1.beta_transformed.txt,  

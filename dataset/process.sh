@@ -1,0 +1,9 @@
+python dataset_preparation.py ldc_orgs_intl_ec_v1.beta.txt
+python dataset_preparation.py ldc_propernames_industry_ce_v1.beta.txt
+python dataset_preparation.py ldc_propernames_org_ec_v1.beta.txt
+python dataset_preparation.py ldc_propernames_other_ec_v1.beta.txt
+python dataset_preparation.py ldc_propernames_people_ec_v1.beta.txt
+python dataset_preparation.py ldc_propernames_place_ec_v1.beta.txt
+python dataset_preparation.py ldc_propernames_press_ec_v1.beta.txt
+python dataset_preparation.py ldc_whoswho_china_ec_v1.txt
+python dataset_preparation.py ldc_whoswho_international_ec_v1.txt
