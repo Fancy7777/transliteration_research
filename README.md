@@ -37,7 +37,10 @@ Do experiement with analysis and adjust plans when necessary. Add other improve 
 3. Some are just dictionary based. Need to use a dictionary to filter
 
 4. First filter out the same tranliteration. 
-5. ldc_propernames_place_ec_v1.beta_transformed.txt filter out only English speaking country. Other country is not neccesary. English spearking country include: USA, UK, Canada, South Africa, Australia, New Zealand, Pakistan, India, Ireland,Nigeria，Philippines,Malaysia,Uganda,Ghana, Cameroon,Zimbabwe,Zambia,Rwanda,sierra leone,Papua New Guinea,Puerto Rico,Jamaica,Namibia
+5. ldc_propernames_place_ec_v1.beta_transformed.txt and ldc_whoswho international_ec_v1_transformed_need_further_process.txt filter out only English speaking country. Other country is not neccesary. English spearking country include: USA, UK, Canada, South Africa, Australia, New Zealand, Pakistan, India, Ireland,Nigeria，Philippines,Malaysia,Uganda,Ghana, Cameroon,Zimbabwe,Zambia,Rwanda,sierra leone,Papua New Guinea,Puerto Rico,Jamaica,Namibia
+
+
+6. Organization and press are used not to be transliterated.
 
 
 Good dataset: ldc_propernames_people_ec_v1.beta_transformed.txt,  
