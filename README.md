@@ -20,8 +20,8 @@ E.g wo = 我，窝，握 etc
 # TODO List
 Experiment design
 
-1. Decide using dataset include: CMU Pronunciation dicitonary, LDC2005T34, LDC2013T06
-2. Preprocessing data to suitable format
+1. Decide using dataset include: CMU Pronunciation dicitonary, LDC2005T34, LDC2013T06       √
+2. Preprocessing data to suitable format													√
 3. Decide evaluation method
 4. Start normal rule based method to construct baseline
 5. Use Statistical method to Try language model to see if can be improved.
