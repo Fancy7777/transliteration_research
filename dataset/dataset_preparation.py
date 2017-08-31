@@ -19,7 +19,7 @@ def process(fname):
     write_file = open(fname.split('.txt')[0]+"_transformed"+".txt",'w')
     for ele in data:
         write_file.write(ele)
-    f.close()
+    write_file.close()
 
 if __name__ == "__main__":
 	fname = sys.argv[1]
