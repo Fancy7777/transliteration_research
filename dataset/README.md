@@ -15,6 +15,6 @@ Experiment design
 5. Combine all results into one using file
 6. change format to '(english_word, chinese word)': location: if_has, pronunciation:__, etc:___ 
 
-## fix last edit for easy use: change saving data format to '(english_word, chinese word)': location: if_has, pronunciation:__, etc:___ 
+@fix last edit for easy use: change saving data format to '(english_word, chinese word)': location: if_has, pronunciation:__, etc:___ 
 
 7. the json file is too large when processing. for easy use. change it to normal txt format. always save last column to be location(if has). previous format is english_word, chinese_word, pronounciation, location(if has)
