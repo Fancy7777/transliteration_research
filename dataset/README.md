@@ -2,7 +2,7 @@
 Experiment design
 
 2017.8.31
-1. - is not cared.
+1. '-' is not cared.
 2. there are some countries' transliteration is not really standard
 3. no more findings
 
@@ -18,3 +18,4 @@ Experiment design
 @fix last edit for easy use: change saving data format to '(english_word, chinese word)': location: if_has, pronunciation:__, etc:___ 
 
 7. the json file is too large when processing. for easy use. change it to normal txt format. always save last column to be location(if has). previous format is english_word, chinese_word, pronounciation, location(if has)
+9. fixed '-'
