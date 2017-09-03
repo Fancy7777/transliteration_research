@@ -29,3 +29,12 @@ Experiment design
 
 Do experiement with analysis and adjust plans when necessary. Add other improve method when the accuracy is sastisfactory.
 
+
+2017/9/3 New Issue:
+When doing enlgish phoneme symbols alignment with Chinese Pinyin. It turns out to be a hard issue. 
+1. CMU dict gives soundmarks are not combined yet. Need a good strategy to combine.
+2. Chinese Character has good resources that transform to Pinyin with any need format.
+3. Alginment of Chinese Pinyin and English soundmarks seems to be a hard problem
+	Possible solution: 1. simple rule-based method(some early papers use this method)
+					   2. Use model to do the allignment. Check paper: How to Speak a Language without Knowing It. The model that they used(wfst b) is exactly what I want. 
+4. Try ask Trevor for opinion.
