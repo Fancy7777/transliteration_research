@@ -37,4 +37,6 @@ When doing enlgish phoneme symbols alignment with Chinese Pinyin. It turns out t
 3. Alginment of Chinese Pinyin and English soundmarks seems to be a hard problem
 	Possible solution: 1. simple rule-based method(some early papers use this method)
 					   2. Use model to do the allignment. Check paper: How to Speak a Language without Knowing It. The model that they used(wfst b) is exactly what I want. 
-4. Try ask Trevor for opinion.
+4. CMU dict gives some bad soundmarks. Ignore it?
+5. Traning size problem. Most paper just has limited resources. eg. not over 10k. 
+6. Try ask Trevor for opinion.
