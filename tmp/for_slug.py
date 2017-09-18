@@ -144,7 +144,7 @@ def graph():
     sess.run(tf.global_variables_initializer())
 
     batch_size = 4000
-    epoch = 100
+    epoch = 1000
     LOSS = []
 
     for q in range(epoch):
