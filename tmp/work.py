@@ -87,78 +87,34 @@ def graph():
     tf.reset_default_graph()
     with tf.device('/gpu:1'):
         sess = tf.Session(config=tf.ConfigProto(log_device_placement=True,allow_soft_placement=True))
-    #sess = tf.InteractiveSession()
 
-    #add placeholders
-        encoder_inputs = tf.placeholder(shape = (None, None), dtype = tf.int32)
-        decoder_targets = tf.placeholder(shape = (None, None), dtype = tf.int32)
-        decoder_inputs = tf.placeholder(shape = (None, None), dtype = tf.int32)
-
+        encoder_inputs = tf.placeholder(shape=(None, None), dtype=tf.int32)
+        decoder_targets = tf.placeholder(shape=(None, None), dtype=tf.int32)
+        decoder_inputs = tf.placeholder(shape=(None, None), dtype=tf.int32)
 
         encoder_embeddings = tf.Variable(tf.random_uniform([len(vocab_inputs), greatestvalue_predict]
-                                                   , -1.0, 1.0), dtype = tf.float32)
+                                                       , -1.0, 1.0), dtype=tf.float32)
 
         decoder_embeddings = tf.Variable(tf.random_uniform([len(vocab_predict), greatestvalue_predict]
-                                                   , -1.0, 1.0), dtype = tf.float32)
+                                                       , -1.0, 1.0), dtype=tf.float32)
 
         encoder_inputs_embedded = tf.nn.embedding_lookup(encoder_embeddings, encoder_inputs)
         decoder_inputs_embedded = tf.nn.embedding_lookup(decoder_embeddings, decoder_inputs)
 
-
-    #define a hidden unit here. Try the hyper parameter
         hidden = 180
-    #################################encoder part############################################
-    # RNN size of greatestvalue_inputs
-        #encoder_cell = tf.contrib.rnn.LSTMCell(hidden)
 
-    # 2 layers of RNN
-    #encoder_rnn_cells =tf.contrib.rnn.MultiRNNCell([encoder_cell] * 2)
-        # add dropout layer here
-        #dropout_lstm_encoder = tf.contrib.rnn.DropoutWrapper(encoder_cell, input_keep_prob=0.5)
+        encoder_cell = tf.contrib.rnn.LSTMCell(hidden, state_is_tuple=True, reuse=tf.get_variable_scope().reuse)
+        _, encoder_final_state = tf.nn.dynamic_rnn(encoder_cell, encoder_inputs_embedded,
+                                               dtype=tf.float32, time_major=True)
 
-        # try this
-        cells = []
-        for _ in range(2):
-            cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(hidden), input_keep_prob=0.5)
-            cells.append(cell)
-        multicell = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=False)
-
-        _, encoder_final_state = tf.nn.dynamic_rnn(multicell, encoder_inputs_embedded,
-                                           dtype = tf.float32, time_major = True)
-
-    #################################end of encoder part#########################################
-
-
-    #################################decoder part############################################
-    # RNN size of greatestvalue_predict
-        #decoder_cell = tf.contrib.rnn.LSTMCell(hidden)
-
-        # 2 layers of RNN
-        # decoder_rnn_cells = tf.contrib.rnn.MultiRNNCell([decoder_cell] * 2)
-        # add dropout layer here
-        #dropout_lstm_decoder = tf.contrib.rnn.DropoutWrapper(decoder_cell, input_keep_prob=0.5)
-
-        # try this
-        decoder_cells = []
-        # bidirectional
-        for _ in range(2):
-            cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(hidden), input_keep_prob=0.5)
-            decoder_cells.append(cell)
-        decoder_multicell = tf.contrib.rnn.MultiRNNCell(decoder_cells, state_is_tuple=False)
-
-        # declare a scope for our decoder, later tensorflow will confuse
-        decoder_outputs, decoder_final_state = tf.nn.dynamic_rnn(decoder_multicell, decoder_inputs_embedded,
+        decoder_cell = tf.contrib.rnn.LSTMCell(hidden)
+        decoder_outputs, decoder_final_state = tf.nn.dynamic_rnn(decoder_cell, decoder_inputs_embedded,
                                                              initial_state=encoder_final_state,
                                                              dtype=tf.float32, time_major=True, scope='decoder')
-
-    #################################end of decoder part############################################
-
         decoder_logits = tf.contrib.layers.linear(decoder_outputs, len(vocab_predict))
 
         decoder_prediction = tf.argmax(decoder_logits, 2)
 
-    # this might very costly if you have very large vocab
-    with tf.device('/gpu:0'):
         cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
             labels=tf.one_hot(decoder_targets, depth=len(vocab_predict), dtype=tf.float32),
             logits=decoder_logits)
@@ -178,7 +134,7 @@ def graph():
         for w in range(0, len(english_phoeneme) - batch_size, batch_size):
             _, losses = sess.run([optimizer, loss],
                                  feeding(english_phoeneme[w: w + batch_size], chinese[w: w + batch_size],
-                                 encoder_inputs,decoder_inputs,decoder_targets,english_phoeneme_dict))
+                                         encoder_inputs, decoder_inputs, decoder_targets, english_phoeneme_dict))
 
             total_loss += losses
 
@@ -188,11 +144,6 @@ def graph():
         if (q + 1) % 10 == 0:
             print('epoch: ' + str(q + 1) + ', total loss: ' + str(total_loss) + ', s/epoch: ' + str(
                 time.time() - lasttime))
-
-    with open('output','w') as f:
-        for ele in LOSS:
-            f.write(str(ele)+'\t')
-    f.close()
 
 if __name__ == '__main__':
 
