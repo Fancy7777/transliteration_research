@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66618da3-99d2-415a-a3a5-2a7b9bd86c5f" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tmp/nohup.out" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tmp/output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tmp/result/3000epoch-150hidden-40%" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp/.ipynb_checkpoints/tmp-checkpoint.ipynb" afterPath="$PROJECT_DIR$/tmp/.ipynb_checkpoints/tmp-checkpoint.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp/for_slug.py" afterPath="$PROJECT_DIR$/tmp/for_slug.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp/tmp.ipynb" afterPath="$PROJECT_DIR$/tmp/tmp.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp/work.py" afterPath="$PROJECT_DIR$/tmp/work.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,8 +27,8 @@
       <file leaf-file-name="for_slug.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tmp/for_slug.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="160" column="4" lean-forward="false" selection-start-line="160" selection-start-column="4" selection-end-line="160" selection-end-column="29" />
+            <state relative-caret-position="180">
+              <caret line="153" column="89" lean-forward="false" selection-start-line="153" selection-start-column="89" selection-end-line="153" selection-end-column="89" />
               <folding>
                 <element signature="e#21#44#0" expanded="true" />
               </folding>
@@ -32,11 +36,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="work.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="work.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tmp/work.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="127" column="16" lean-forward="true" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="16" />
+            <state relative-caret-position="240">
+              <caret line="170" column="21" lean-forward="false" selection-start-line="170" selection-start-column="21" selection-end-line="170" selection-end-column="21" />
+              <folding>
+                <element signature="e#21#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="another.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tmp/another.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="461">
+              <caret line="165" column="44" lean-forward="false" selection-start-line="165" selection-start-column="44" selection-end-line="165" selection-end-column="44" />
               <folding>
                 <element signature="e#21#44#0" expanded="true" />
               </folding>
@@ -63,9 +79,11 @@
       <find>session</find>
       <find>helpers</find>
       <find>loss</find>
-      <find>cpu</find>
       <find>chinese_id_dict</find>
       <find>sess</find>
+      <find>cpu</find>
+      <find>gpu</find>
+      <find>batch_size</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -77,14 +95,15 @@
         <option value="$PROJECT_DIR$/for_slug.py" />
         <option value="$PROJECT_DIR$/tmp/for_slug.py" />
         <option value="$PROJECT_DIR$/tmp/work.py" />
+        <option value="$PROJECT_DIR$/tmp/another.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="83" />
-    <option name="y" value="74" />
-    <option name="width" value="1316" />
-    <option name="height" value="801" />
+    <option name="x" value="1512" />
+    <option name="y" value="83" />
+    <option name="width" value="1091" />
+    <option name="height" value="746" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -101,8 +120,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -131,6 +148,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -291,10 +310,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="83" y="74" width="1316" height="801" extended-state="1" />
+    <frame x="1512" y="83" width="1091" height="746" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24942085" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1542056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -321,6 +340,26 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tmp/for_slug.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2355">
+          <caret line="160" column="4" lean-forward="false" selection-start-line="160" selection-start-column="4" selection-end-line="160" selection-end-column="29" />
+          <folding>
+            <element signature="e#21#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/work.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#21#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tmp/for_slug.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2400">
@@ -351,10 +390,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/dataset.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="19" lean-forward="false" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tmp/for_slug.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="160" column="4" lean-forward="false" selection-start-line="160" selection-start-column="4" selection-end-line="160" selection-end-column="29" />
+        <state relative-caret-position="180">
+          <caret line="153" column="89" lean-forward="false" selection-start-line="153" selection-start-column="89" selection-end-line="153" selection-end-column="89" />
           <folding>
             <element signature="e#21#44#0" expanded="true" />
           </folding>
@@ -363,8 +410,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tmp/work.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="127" column="16" lean-forward="true" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="16" />
+        <state relative-caret-position="240">
+          <caret line="170" column="21" lean-forward="false" selection-start-line="170" selection-start-column="21" selection-end-line="170" selection-end-column="21" />
+          <folding>
+            <element signature="e#21#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/another.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="165" column="44" lean-forward="false" selection-start-line="165" selection-start-column="44" selection-end-line="165" selection-end-column="44" />
           <folding>
             <element signature="e#21#44#0" expanded="true" />
           </folding>

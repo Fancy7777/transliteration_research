@@ -84,8 +84,8 @@ def feeding(inputs, labels,encoder_inputs,decoder_inputs,decoder_targets,english
 def graph():
     #reset the whole thing
 
-    tf.reset_default_graph()
-    with tf.device('/gpu:1'):
+    #tf.reset_default_graph()
+    with tf.device('/gpu:4'):
         sess = tf.Session(config=tf.ConfigProto(log_device_placement=True,allow_soft_placement=True))
     #sess = tf.InteractiveSession()
 
@@ -106,7 +106,7 @@ def graph():
 
 
     #define a hidden unit here. Try the hyper parameter
-        hidden = 180
+        hidden = 200
     #################################encoder part############################################
     # RNN size of greatestvalue_inputs
         #encoder_cell = tf.contrib.rnn.LSTMCell(hidden)
@@ -158,17 +158,17 @@ def graph():
         decoder_prediction = tf.argmax(decoder_logits, 2)
 
     # this might very costly if you have very large vocab
-    with tf.device('/gpu:0'):
+
         cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
             labels=tf.one_hot(decoder_targets, depth=len(vocab_predict), dtype=tf.float32),
             logits=decoder_logits)
 
         loss = tf.reduce_mean(cross_entropy)
-        optimizer = tf.train.AdamOptimizer(0.01).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(0.003).minimize(loss)
 
         sess.run(tf.global_variables_initializer())
 
-    batch_size = 6000
+    batch_size = 5000
     epoch = 3000
     LOSS = []
 
@@ -189,7 +189,7 @@ def graph():
             print('epoch: ' + str(q + 1) + ', total loss: ' + str(total_loss) + ', s/epoch: ' + str(
                 time.time() - lasttime))
 
-    with open('output','w') as f:
+    with open('output1','w') as f:
         for ele in LOSS:
             f.write(str(ele)+'\t')
     f.close()

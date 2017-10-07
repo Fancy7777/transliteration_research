@@ -85,7 +85,7 @@ def graph():
     #reset the whole thing
 
     #tf.reset_default_graph()
-    with tf.device('/gpu:5'):
+    with tf.device('/gpu:6'):
         sess = tf.Session(config=tf.ConfigProto(log_device_placement=True,allow_soft_placement=True))
     #sess = tf.InteractiveSession()
 
@@ -164,12 +164,12 @@ def graph():
             logits=decoder_logits)
 
         loss = tf.reduce_mean(cross_entropy)
-        optimizer = tf.train.AdamOptimizer(0.003).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(0.001).minimize(loss)
 
         sess.run(tf.global_variables_initializer())
 
-    batch_size = 3500
-    epoch = 1500
+    batch_size = 2500
+    epoch = 3000
     LOSS = []
 
     for q in range(epoch):
@@ -189,7 +189,7 @@ def graph():
             print('epoch: ' + str(q + 1) + ', total loss: ' + str(total_loss) + ', s/epoch: ' + str(
                 time.time() - lasttime))
 
-    with open('output2','w') as f:
+    with open('BEST','w') as f:
         for ele in LOSS:
             f.write(str(ele)+'\t')
     f.close()
