@@ -58,20 +58,22 @@ def batch(inputs, max_sequence_length=None):
 
     return inputs_time_major
 
-
 def feeding(inputs, labels,encoder_inputs,decoder_inputs,decoder_targets,english_phoneme_dict):
     inputs_int = [];
     predict_int = []
     for i in range(len(inputs)):
         single_input = []
         single_predict = []
-        for x in range(len(labels[i])):
+        for x in range(75):
             try:
                 single_input += [english_phoneme_dict[inputs[i][x]]]
             except:
                 single_input += [0]
-        for x in range(len(labels[i])):
-            single_predict += [chinese_id_dict[labels[i][x]]]
+        for x in range(75):
+            try:
+                single_predict += [chinese_id_dict[labels[i][x]]]
+            except:
+                single_predict +=[0]
         inputs_int.append(single_input);
         predict_int.append(single_predict)
 
@@ -81,118 +83,91 @@ def feeding(inputs, labels,encoder_inputs,decoder_inputs,decoder_targets,english
 
     return {encoder_inputs: enc_input, decoder_inputs: dec_input, decoder_targets: dec_target}
 
+def label_to_chinese(label):
+    chinese = ''
+    for i in range(len(label)):
+        if label[i][0] == 0 or label[i][0] == 1:
+            continue
+        chinese += vocab_predict[label[i][0]] + ' '
+    return chinese
+
+
+
 def graph():
     #reset the whole thing
 
     #tf.reset_default_graph()
-    with tf.device('/gpu:5'):
+    with tf.device('/gpu:1'):
         sess = tf.Session(config=tf.ConfigProto(log_device_placement=True,allow_soft_placement=True))
-    #sess = tf.InteractiveSession()
 
-    #add placeholders
-        encoder_inputs = tf.placeholder(shape = (None, None), dtype = tf.int32)
-        decoder_targets = tf.placeholder(shape = (None, None), dtype = tf.int32)
-        decoder_inputs = tf.placeholder(shape = (None, None), dtype = tf.int32)
+        # placeholders pass data in
+        encoder_inputs = tf.placeholder(shape=(None, None), dtype=tf.int32)
+        decoder_targets = tf.placeholder(shape=(None, None), dtype=tf.int32)
+        decoder_inputs = tf.placeholder(shape=(None, None), dtype=tf.int32)
 
-
-        encoder_embeddings = tf.Variable(tf.random_uniform([len(vocab_inputs), greatestvalue_predict]
-                                                   , -1.0, 1.0), dtype = tf.float32)
-
-        decoder_embeddings = tf.Variable(tf.random_uniform([len(vocab_predict), greatestvalue_predict]
-                                                   , -1.0, 1.0), dtype = tf.float32)
-
+        # variables
+        # size should be [max_time,batch_size] try batch_size here
+        encoder_embeddings = tf.Variable(tf.random_uniform([len(vocab_inputs), batch_size]
+                                                           , -1.0, 1.0), dtype=tf.float32)
+        decoder_embeddings = tf.Variable(tf.random_uniform([len(vocab_predict), batch_size]
+                                                           , -1.0, 1.0), dtype=tf.float32)
         encoder_inputs_embedded = tf.nn.embedding_lookup(encoder_embeddings, encoder_inputs)
         decoder_inputs_embedded = tf.nn.embedding_lookup(decoder_embeddings, decoder_inputs)
 
+        # initial encoder cell to be LSTM
+        encoder_cell = tf.contrib.rnn.LSTMCell(encoder_hidden_units)
 
-    #define a hidden unit here. Try the hyper parameter
-        hidden = 280
-    #################################encoder part############################################
-    # RNN size of greatestvalue_inputs
-        #encoder_cell = tf.contrib.rnn.LSTMCell(hidden)
+        encoder_outputs, encoder_final_state = tf.nn.dynamic_rnn(encoder_cell, encoder_inputs_embedded,
+                                                                 dtype=tf.float32, time_major=True)
 
-    # 2 layers of RNN
-    #encoder_rnn_cells =tf.contrib.rnn.MultiRNNCell([encoder_cell] * 2)
-        # add dropout layer here
-        #dropout_lstm_encoder = tf.contrib.rnn.DropoutWrapper(encoder_cell, input_keep_prob=0.5)
+        # initial decoder to be also LSTMcell
+        decoder_cell = tf.contrib.rnn.LSTMCell(decoder_hidden_units)
 
-        # try this
-        cells = []
-        for _ in range(2):
-            cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(hidden), input_keep_prob=0.5)
-            cells.append(cell)
-        multicell = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=False)
-
-        _, encoder_final_state = tf.nn.dynamic_rnn(multicell, encoder_inputs_embedded,
-                                           dtype = tf.float32, time_major = True)
-
-    #################################end of encoder part#########################################
-
-
-    #################################decoder part############################################
-    # RNN size of greatestvalue_predict
-        #decoder_cell = tf.contrib.rnn.LSTMCell(hidden)
-
-        # 2 layers of RNN
-        # decoder_rnn_cells = tf.contrib.rnn.MultiRNNCell([decoder_cell] * 2)
-        # add dropout layer here
-        #dropout_lstm_decoder = tf.contrib.rnn.DropoutWrapper(decoder_cell, input_keep_prob=0.5)
-
-        # try this
-        decoder_cells = []
-        # bidirectional
-        for _ in range(2):
-            cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(hidden), input_keep_prob=0.5)
-            decoder_cells.append(cell)
-        decoder_multicell = tf.contrib.rnn.MultiRNNCell(decoder_cells, state_is_tuple=False)
-
-        # declare a scope for our decoder, later tensorflow will confuse
-        decoder_outputs, decoder_final_state = tf.nn.dynamic_rnn(decoder_multicell, decoder_inputs_embedded,
-                                                             initial_state=encoder_final_state,
-                                                             dtype=tf.float32, time_major=True, scope='decoder')
-
-    #################################end of decoder part############################################
+        decoder_outputs, decoder_final_state = tf.nn.dynamic_rnn(decoder_cell, decoder_inputs_embedded,
+                                                                 initial_state=encoder_final_state, dtype=tf.float32,
+                                                                 time_major=True, scope='decoder')
 
         decoder_logits = tf.contrib.layers.linear(decoder_outputs, len(vocab_predict))
 
         decoder_prediction = tf.argmax(decoder_logits, 2)
-
-    # this might very costly if you have very large vocab
 
         cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
             labels=tf.one_hot(decoder_targets, depth=len(vocab_predict), dtype=tf.float32),
             logits=decoder_logits)
 
         loss = tf.reduce_mean(cross_entropy)
-        optimizer = tf.train.AdamOptimizer(0.003).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(0.001).minimize(loss)
 
         sess.run(tf.global_variables_initializer())
 
-    batch_size = 3500
-    epoch = 1500
-    LOSS = []
+        LOSS = []
 
-    for q in range(epoch):
-        total_loss = 0
-        lasttime = time.time()
-        for w in range(0, len(english_phoeneme) - batch_size, batch_size):
-            _, losses = sess.run([optimizer, loss],
-                                 feeding(english_phoeneme[w: w + batch_size], chinese[w: w + batch_size],
-                                 encoder_inputs,decoder_inputs,decoder_targets,english_phoeneme_dict))
+        for q in range(epoch):
+            total_loss = 0
+            lasttime = time.time()
+            for w in range(0, len(english_phoeneme) - batch_size, batch_size):
+                _, losses = sess.run([optimizer, loss],
+                                     feeding(english_phoeneme[w: w + batch_size], chinese[w: w + batch_size],encoder_inputs,decoder_inputs,decoder_targets,english_phoneme_dict))
 
-            total_loss += losses
+                total_loss += losses
 
-        total_loss = total_loss / ((len(english_phoeneme) - batch_size) / (batch_size * 1.0))
-        LOSS.append(total_loss)
+            total_loss = total_loss / ((len(english_phoeneme) - batch_size) / (batch_size * 1.0))
+            LOSS.append(total_loss)
 
-        if (q + 1) % 10 == 0:
-            print('epoch: ' + str(q + 1) + ', total loss: ' + str(total_loss) + ', s/epoch: ' + str(
-                time.time() - lasttime))
+            if (q + 1) % 10 == 0:
+                print('epoch: ' + str(q + 1) + ', total loss: ' + str(total_loss) + ', s/epoch: ' + str(
+                    time.time() - lasttime))
+                for i in range(10):
+                    rand = np.random.randint(len(english_phoeneme))
+                    test = feeding(english_phoeneme[rand: rand + 1], chinese[rand: rand + 1], encoder_inputs,
+                                   decoder_inputs, decoder_targets, english_phoneme_dict)
+                    predict = sess.run(decoder_prediction, test)
+                    print('input: ' + str(english_phoeneme[rand: rand + 1]))
+                    print('supposed label: ' + str(chinese[rand: rand + 1]))
+                    print('predict label:' + str(label_to_chinese(predict)) + '\n')
+                print('#######################next 10 epoch#############################')
 
-    with open('output2','w') as f:
-        for ele in LOSS:
-            f.write(str(ele)+'\t')
-    f.close()
+
 
 if __name__ == '__main__':
 
@@ -202,7 +177,7 @@ if __name__ == '__main__':
     chinese_id_dict = prepare_chinese_id_dict()
     vocab_predict = prepare_vocab_predict()
 
-    english_phoeneme_dict = prepare_english_phoneme_dict()
+    english_phoneme_dict = prepare_english_phoneme_dict()
 
     # get in the data
     chinese = []
@@ -215,9 +190,18 @@ if __name__ == '__main__':
     english_phoeneme = [phoeneme.split('\n')[0].split() for phoeneme in english_phoeneme]
     chinese = [list(word) for word in chinese]
 
+    for ele in chinese:
+        if ' ' in ele:
+            ele.remove(' ')
 
-    # the dimension of english phonemes
-    greatestvalue_predict = 42
+    for ele in chinese:
+        if ' ' in ele:
+            ele.remove(' ')
+
+    batch_size = 20
+    encoder_hidden_units = 80
+    decoder_hidden_units = 80
+    epoch = 100
 
     #run the session
     graph()

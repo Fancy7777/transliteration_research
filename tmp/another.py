@@ -81,6 +81,14 @@ def feeding(inputs, labels,encoder_inputs,decoder_inputs,decoder_targets,english
 
     return {encoder_inputs: enc_input, decoder_inputs: dec_input, decoder_targets: dec_target}
 
+def label_to_chinese(label):
+    chinese = ''
+    for i in range(len(label)):
+        if label[i][0] == 0 or label[i][0] == 1:
+            continue
+        chinese += vocab_predict[label[i][0]] + ' '
+    return chinese
+
 def graph():
     #reset the whole thing
 
@@ -118,7 +126,8 @@ def graph():
 
         # try this
         cells = []
-        for _ in range(2):
+        for _ in range(2)\
+                :
             cell = tf.contrib.rnn.DropoutWrapper(tf.contrib.rnn.GRUCell(hidden), input_keep_prob=0.5)
             cells.append(cell)
         multicell = tf.contrib.rnn.MultiRNNCell(cells, state_is_tuple=False)
@@ -164,9 +173,10 @@ def graph():
             logits=decoder_logits)
 
         loss = tf.reduce_mean(cross_entropy)
-        optimizer = tf.train.AdamOptimizer(0.001).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(0.003).minimize(loss)
 
         sess.run(tf.global_variables_initializer())
+        saver = tf.train.Saver(tf.global_variables())
 
     batch_size = 2500
     epoch = 3000
@@ -188,6 +198,10 @@ def graph():
         if (q + 1) % 10 == 0:
             print('epoch: ' + str(q + 1) + ', total loss: ' + str(total_loss) + ', s/epoch: ' + str(
                 time.time() - lasttime))
+
+
+    saver.save(sess,'model.ckpt')
+
 
     with open('BEST','w') as f:
         for ele in LOSS:
@@ -214,10 +228,13 @@ if __name__ == '__main__':
             english_phoeneme.append(temp[2])
     english_phoeneme = [phoeneme.split('\n')[0].split() for phoeneme in english_phoeneme]
     chinese = [list(word) for word in chinese]
+    for ele in chinese:
+        if ' ' in ele:
+            ele.remove(' ')
 
 
     # the dimension of english phonemes
-    greatestvalue_predict = 42
+    greatestvalue_predict = 41
 
     #run the session
     graph()
