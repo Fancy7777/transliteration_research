@@ -147,7 +147,8 @@ def graph():
             lasttime = time.time()
             for w in range(0, len(english_phoeneme) - batch_size, batch_size):
                 _, losses = sess.run([optimizer, loss],
-                                     feeding(english_phoeneme[w: w + batch_size], chinese[w: w + batch_size],encoder_inputs,decoder_inputs,decoder_targets,english_phoneme_dict))
+                                     feeding(english_phoeneme[w: w + batch_size], chinese[w: w + batch_size],
+                                             encoder_inputs,decoder_inputs,decoder_targets,english_phoneme_dict))
 
                 total_loss += losses
 
