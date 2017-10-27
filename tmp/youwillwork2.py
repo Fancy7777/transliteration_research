@@ -117,8 +117,8 @@ def graph():
         # 128,256
         batch_size = 128
         embedding_size = 256
-        encoder_hidden_units = 32
-        decoder_hidden_units = 32
+        encoder_hidden_units = 100
+        decoder_hidden_units = 100
         epoch = 100
         encoder_max_length = 39
         decoder_max_length = 75
@@ -155,40 +155,17 @@ def graph():
 
         # 在第二个维度上取argmax
         decoder_prediction = tf.argmax(decoder_logits, 2)
+        cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
+            labels=tf.one_hot(decoder_targets, depth=len(vocab_predict), dtype=tf.float32),
+            logits=decoder_logits)
+        loss = tf.reduce_mean(cross_entropy)
 
-        def sent_len(sentence):
-            '''
-            Args:
-                sentence: [None, max_sentence_length]
-            Returns:
-                length: [None], the actual length of each sentence in the batch
-            '''
-            used = tf.sign(tf.abs(sentence))
-            length = tf.reduce_sum(used, reduction_indices=1)
-            length = tf.cast(x=length, dtype=tf.int32)
-            return length
-
-        cross_entropy_mask = tf.sequence_mask(
-            lengths=sent_len(decoder_targets),
-            maxlen=decoder_max_length + 1,
-            dtype=tf.float32,
-        )
-        # [None, max_sentence_length]
-
-        loss = tf.contrib.seq2seq.sequence_loss(
-            logits=decoder_logits,  # [None, max_sentence_length, tag_set_size]
-            targets=decoder_targets,  # [None, max_sentence_length]
-            weights=cross_entropy_mask,
-            average_across_timesteps=True,
-            average_across_batch=True,
-            name="seq2seq_sequence_loss",
-        )
-
-        optimizer = tf.train.AdamOptimizer(0.01).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(0.1).minimize(loss)
 
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver(tf.global_variables())
 
+        LOSS = []
 
         import time
         import random
@@ -226,7 +203,7 @@ def graph():
                     print('supposed label: ' + str(chinese[rand: rand + 1]))
                     print('predict label:' + str(label_to_chinese(predict)) + '\n')
                 print('#######################next 10 epoch#############################')
-        saver.save(sess, 'youwillwork.ckpt')
+
 
 
 if __name__ == '__main__':
